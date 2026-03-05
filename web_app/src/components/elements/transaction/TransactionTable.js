@@ -30,7 +30,12 @@ export default class TransactionTable extends Component {
 
     for (var item in row_data) {
       let data = row_data[item];
-      row_data[item]["total_price"] = parseFloat(data.total_price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      row_data[item]["total_price_display"] = parseFloat(
+        data.total_price || 0,
+      ).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
       row_data[item]["details"] = (
         <MDBBtn
           className="btn btn-primary btn-block"
@@ -68,7 +73,7 @@ export default class TransactionTable extends Component {
         },
         {
           label: "TOTAL PRICE",
-          field: "total_price",
+          field: "total_price_display",
         },
         {
           label: "NOTES",
@@ -152,17 +157,38 @@ export default class TransactionTable extends Component {
                       <td>
                         <strong>Total Price</strong>
                       </td>
-                      <td>{parseFloat(this.state.transaction_details.total_price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(
+                          this.state.transaction_details.total_price || 0,
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
                     </tr>
                     <tr>
                       <td>
                         <strong>Delivery Fee</strong>
                       </td>
-                      <td>{parseFloat(this.state.transaction_details.delivery_fee || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(
+                          this.state.transaction_details.delivery_fee || 0,
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
                       <td>
                         <strong>Discount</strong>
                       </td>
-                      <td>{parseFloat(this.state.transaction_details.discount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(
+                          this.state.transaction_details.discount || 0,
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
                     </tr>
                     <tr>
                       <td>
@@ -191,24 +217,62 @@ export default class TransactionTable extends Component {
                         <td>{list.item_id}</td>
                         <td>{list.item_name}</td>
                         <td>{list.units_sold}</td>
-                        <td>{parseFloat(list.selling_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td>{parseFloat(list.total_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>
+                          {parseFloat(list.selling_price).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            },
+                          )}
+                        </td>
+                        <td>
+                          {parseFloat(list.total_price).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            },
+                          )}
+                        </td>
                       </tr>
                     ))}
                     <tr>
                       <td colSpan="3"></td>
                       <td>Subtotal:</td>
-                      <td>{parseFloat(this.state.total_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(this.state.total_price).toLocaleString(
+                          undefined,
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
+                        )}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="3"></td>
                       <td>Delivery Fee:</td>
-                      <td>{parseFloat(this.state.transaction_details.delivery_fee || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(
+                          this.state.transaction_details.delivery_fee || 0,
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="3"></td>
                       <td>Discount:</td>
-                      <td>{parseFloat(this.state.transaction_details.discount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td>
+                        {parseFloat(
+                          this.state.transaction_details.discount || 0,
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="3"></td>
@@ -217,7 +281,12 @@ export default class TransactionTable extends Component {
                       </td>
                       <td>
                         <strong>
-                          {parseFloat(this.state.transaction_details.total_price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          {parseFloat(
+                            this.state.transaction_details.total_price || 0,
+                          ).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </strong>
                       </td>
                     </tr>

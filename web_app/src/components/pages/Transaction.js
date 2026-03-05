@@ -143,11 +143,19 @@ export default class Transaction extends Component {
   }
 
   handleDeliveryFeeChange(e) {
-    this.setState({ delivery_fee: parseFloat(e.target.value) || 0 });
+    this.setState({ delivery_fee: e.target.value });
+  }
+
+  handleDeliveryFeeBlur() {
+    this.setState({ delivery_fee: parseFloat(this.state.delivery_fee) || 0 });
   }
 
   handleDiscountChange(e) {
-    this.setState({ discount: parseFloat(e.target.value) || 0 });
+    this.setState({ discount: e.target.value });
+  }
+
+  handleDiscountBlur() {
+    this.setState({ discount: parseFloat(this.state.discount) || 0 });
   }
 
   continueTransactionProcess(special_id) {
@@ -259,7 +267,10 @@ export default class Transaction extends Component {
       var items_total = data.items
         .map((e) => parseFloat(e.price))
         .reduce((a, b) => a + b, 0);
-      var total_price = items_total + data.delivery_fee - data.discount;
+      var total_price =
+        items_total +
+        parseFloat(data.delivery_fee || 0) -
+        parseFloat(data.discount || 0);
       var json = {
         transaction_id: data.transaction_id,
         total_price: total_price,
@@ -426,15 +437,14 @@ export default class Transaction extends Component {
                     </label>
                     <input
                       onChange={(e) => this.handleDeliveryFeeChange(e)}
+                      onBlur={() => this.handleDeliveryFeeBlur()}
                       className="form-control form-control-md"
                       type="number"
                       id="delivery_fee"
                       name="delivery_fee"
                       placeholder="DELIVERY FEE"
                       min="0"
-                      value={(parseFloat(this.state.delivery_fee) || 0).toFixed(
-                        2,
-                      )}
+                      value={this.state.delivery_fee}
                     />
                   </div>
                   <div style={{ flex: 1 }}>
@@ -443,13 +453,14 @@ export default class Transaction extends Component {
                     </label>
                     <input
                       onChange={(e) => this.handleDiscountChange(e)}
+                      onBlur={() => this.handleDiscountBlur()}
                       className="form-control form-control-md"
                       type="number"
                       id="discount"
                       name="discount"
                       placeholder="DISCOUNT"
                       min="0"
-                      value={(parseFloat(this.state.discount) || 0).toFixed(2)}
+                      value={this.state.discount}
                     />
                   </div>
                 </div>
@@ -535,9 +546,13 @@ export default class Transaction extends Component {
                           onChange={(e) =>
                             this.handleInputChange(e, index, "price")
                           }
-                          value={(
-                            parseFloat(this.state.items[index].price) || 0
-                          ).toFixed(2)}
+                          onBlur={() => {
+                            var items = this.state.items;
+                            items[index]["price"] =
+                              parseFloat(items[index]["price"]) || 0;
+                            this.setState({ items });
+                          }}
+                          value={this.state.items[index].price}
                           required
                         />
                       </td>
