@@ -6,9 +6,11 @@ export default class TransactionTable extends Component {
     transactions: [],
     transaction_details: {},
     total_price: 0.0,
+    modalLoading: false,
   };
 
   handleModalState(data) {
+    this.setState({ transaction_details: data, modalLoading: true });
     this.props.req
       .get("tdetails", {
         params: {
@@ -20,9 +22,12 @@ export default class TransactionTable extends Component {
         var total = data
           .map((e) => parseFloat(e.total_price))
           .reduce((a, b) => a + b, 0);
-        this.setState({ transactions: data, total_price: total });
+        this.setState({
+          transactions: data,
+          total_price: total,
+          modalLoading: false,
+        });
       });
-    this.setState({ transaction_details: data });
   }
 
   render() {
@@ -125,173 +130,195 @@ export default class TransactionTable extends Component {
                 </button>
               </div>
               <div className="modal-body">
-                <table className="table table-sm table-borderless">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <strong>Receipt Number</strong>
-                      </td>
-                      <td>{this.state.transaction_details.transaction_id}</td>
-                      <td>
-                        <strong>Customer Name</strong>
-                      </td>
-                      <td>{this.state.transaction_details.customer_name}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Customer Address</strong>
-                      </td>
-                      <td>{this.state.transaction_details.customer_address}</td>
-                      <td>
-                        <strong>Customer Contact</strong>
-                      </td>
-                      <td>
-                        {this.state.transaction_details.customer_contact_number}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Transaction Date</strong>
-                      </td>
-                      <td>{this.state.transaction_details.transaction_date}</td>
-                      <td>
-                        <strong>Total Price</strong>
-                      </td>
-                      <td>
-                        {parseFloat(
-                          this.state.transaction_details.total_price || 0,
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Delivery Fee</strong>
-                      </td>
-                      <td>
-                        {parseFloat(
-                          this.state.transaction_details.delivery_fee || 0,
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                      <td>
-                        <strong>Discount</strong>
-                      </td>
-                      <td>
-                        {parseFloat(
-                          this.state.transaction_details.discount || 0,
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Notes</strong>
-                      </td>
-                      <td colSpan="3">
-                        {this.state.transaction_details.notes}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <hr />
-                <table className="table table-hover table-dark table-striped table-sm">
-                  <thead>
-                    <tr>
-                      <th>ITEM ID</th>
-                      <th>ITEM NAME</th>
-                      <th>UNITS SOLD</th>
-                      <th>PRICE PER UNIT</th>
-                      <th>TOTAL PRICE</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.transactions.map((list, index) => (
-                      <tr key={index}>
-                        <td>{list.item_id}</td>
-                        <td>{list.item_name}</td>
-                        <td>{list.units_sold}</td>
-                        <td>
-                          {parseFloat(list.selling_price).toLocaleString(
-                            undefined,
+                {this.state.modalLoading ? (
+                  <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                    <p className="mt-2 text-muted">Loading details...</p>
+                  </div>
+                ) : (
+                  <>
+                    <table className="table table-sm table-borderless">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <strong>Receipt Number</strong>
+                          </td>
+                          <td>
+                            {this.state.transaction_details.transaction_id}
+                          </td>
+                          <td>
+                            <strong>Customer Name</strong>
+                          </td>
+                          <td>
+                            {this.state.transaction_details.customer_name}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Customer Address</strong>
+                          </td>
+                          <td>
+                            {this.state.transaction_details.customer_address}
+                          </td>
+                          <td>
+                            <strong>Customer Contact</strong>
+                          </td>
+                          <td>
                             {
+                              this.state.transaction_details
+                                .customer_contact_number
+                            }
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Transaction Date</strong>
+                          </td>
+                          <td>
+                            {this.state.transaction_details.transaction_date}
+                          </td>
+                          <td>
+                            <strong>Total Price</strong>
+                          </td>
+                          <td>
+                            {parseFloat(
+                              this.state.transaction_details.total_price || 0,
+                            ).toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            },
-                          )}
-                        </td>
-                        <td>
-                          {parseFloat(list.total_price).toLocaleString(
-                            undefined,
-                            {
+                            })}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Delivery Fee</strong>
+                          </td>
+                          <td>
+                            {parseFloat(
+                              this.state.transaction_details.delivery_fee || 0,
+                            ).toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            },
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td colSpan="3"></td>
-                      <td>Subtotal:</td>
-                      <td>
-                        {parseFloat(this.state.total_price).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          },
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="3"></td>
-                      <td>Delivery Fee:</td>
-                      <td>
-                        {parseFloat(
-                          this.state.transaction_details.delivery_fee || 0,
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="3"></td>
-                      <td>Discount:</td>
-                      <td>
-                        {parseFloat(
-                          this.state.transaction_details.discount || 0,
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="3"></td>
-                      <td>
-                        <strong>Total Price:</strong>
-                      </td>
-                      <td>
-                        <strong>
-                          {parseFloat(
-                            this.state.transaction_details.total_price || 0,
-                          ).toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                            })}
+                          </td>
+                          <td>
+                            <strong>Discount</strong>
+                          </td>
+                          <td>
+                            {parseFloat(
+                              this.state.transaction_details.discount || 0,
+                            ).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Notes</strong>
+                          </td>
+                          <td colSpan="3">
+                            {this.state.transaction_details.notes}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <hr />
+                    <table className="table table-hover table-dark table-striped table-sm">
+                      <thead>
+                        <tr>
+                          <th>ITEM ID</th>
+                          <th>ITEM NAME</th>
+                          <th>UNITS SOLD</th>
+                          <th>PRICE PER UNIT</th>
+                          <th>TOTAL PRICE</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.transactions.map((list, index) => (
+                          <tr key={index}>
+                            <td>{list.item_id}</td>
+                            <td>{list.item_name}</td>
+                            <td>{list.units_sold}</td>
+                            <td>
+                              {parseFloat(list.selling_price).toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                },
+                              )}
+                            </td>
+                            <td>
+                              {parseFloat(list.total_price).toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                },
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                        <tr>
+                          <td colSpan="3"></td>
+                          <td>Subtotal:</td>
+                          <td>
+                            {parseFloat(this.state.total_price).toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              },
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan="3"></td>
+                          <td>Delivery Fee:</td>
+                          <td>
+                            {parseFloat(
+                              this.state.transaction_details.delivery_fee || 0,
+                            ).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan="3"></td>
+                          <td>Discount:</td>
+                          <td>
+                            {parseFloat(
+                              this.state.transaction_details.discount || 0,
+                            ).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan="3"></td>
+                          <td>
+                            <strong>Total Price:</strong>
+                          </td>
+                          <td>
+                            <strong>
+                              {parseFloat(
+                                this.state.transaction_details.total_price || 0,
+                              ).toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </>
+                )}
               </div>
             </div>
           </div>
