@@ -1,37 +1,50 @@
 .sidebar-dark .nav-item .nav-link i {
-    margin-right: .5rem !important;
+  margin-right: 0.5rem !important;
 }
 
 #Inventory-Add-New button,
 #Employee-Add-New button,
 #Suppliers-Add-New button,
 #EditModal button {
-    margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 #AddToInvModal .modal-body {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 #AddToInvModal .modal-body > input {
-    height: 36px;
-    margin-right: 10px;
+  height: 36px;
+  margin-right: 10px;
 }
 
 #transaction-add-more-btn {
-    display: flex;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 30px;
-    width: 50px;
-    height: 50px;
-    bottom: 25px;
-    right: 45px;
+  display: block;
+  margin: 0 auto;
+  font-size: 1.25rem;
 }
 
 #add_trans .qty-cell {
-    vertical-align: middle;
+  vertical-align: middle;
+}
+
+#content .container-fluid {
+  padding: 4px 16px;
+}
+
+.dataTables_wrapper,
+.dataTables_wrapper th,
+.dataTables_wrapper td {
+  font-size: 0.9rem;
+}
+
+.dataTables_wrapper th,
+.dataTables_wrapper td {
+  padding: 0.8rem 0.8rem !important;
+}
+
+.dataTables_wrapper td .btn {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
 }

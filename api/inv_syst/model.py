@@ -46,6 +46,11 @@ class Transaction(Base):
     total_price = Column(Float(asdecimal=True), nullable=False)
     notes = Column(VARCHAR(450), nullable=False)
     transaction_date = Column(VARCHAR(45), nullable=False)
+    customer_name = Column(VARCHAR(255), nullable=False)
+    customer_address = Column(VARCHAR(500), nullable=False)
+    customer_contact_number = Column(VARCHAR(45), nullable=False)
+    delivery_fee = Column(Float(asdecimal=True), nullable=False)
+    discount = Column(Float(asdecimal=True), nullable=False)
 
 
 class TransactionDetail(Base):

@@ -120,8 +120,8 @@ export default class SuppliersTable extends Component {
                     striped
                     hover
                     data={data}
-                    entries={5}
-                    entriesOptions={[5, 10, 25, 50]}
+                    entries={10}
+                    entriesOptions={[10, 25, 50]}
                     noBottomColumns
                     btn
                 />

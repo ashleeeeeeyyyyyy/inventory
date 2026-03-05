@@ -7,7 +7,7 @@ from inv_syst.SQLMiddleware import SQLAlchemySessionManager
 import falcon
 
 
-db_url = 'mysql+mysqldb://root:root@host.docker.internal:3306/inv_syst'
+db_url = 'mysql+mysqldb://root:root@mysql:3306/inv_syst'
 db_engine = create_engine(db_url)
 scoped_sessions = ScopedSession(db_engine=db_engine)
 Sessions = scoped_sessions.create_session()

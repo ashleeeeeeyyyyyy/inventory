@@ -5,6 +5,7 @@ export default class ProductModal extends Component {
 
 
     state = {
+        isLoading: false,
         edit_data: {
             item_id: '',
             spec_code: '',
@@ -46,17 +47,22 @@ export default class ProductModal extends Component {
     }
 
     handleFormSubmit = event => {
+        this.setState({ isLoading: true })
         let new_url = 'inventory'
         let data = this.state.edit_data
-        this.props.req.post(new_url, data).then(res => {
-            this.props.tools.swal.fire('Success!', 'Inventory Updated!', 'success').then(() => {
-                window.location.reload(false);
+        setTimeout(() => {
+            this.props.req.post(new_url, data).then(() => {
+                this.setState({ isLoading: false })
+                this.props.tools.swal.fire('Success!', 'Inventory Updated!', 'success').then(() => {
+                    window.location.reload(false);
+                })
+            }).catch(error => {
+                this.setState({ isLoading: false })
+                if(error.response.status === 409) {
+                    this.props.tools.swal.fire('Error!', 'An item with code ' + data.item_id + ' already exist!', 'error')
+                }
             })
-        }).catch(error => {
-            if(error.response.status === 409) {
-                this.props.tools.swal.fire('Error!', 'An item with code ' + data.item_id + ' already exist!', 'error')
-            }
-        })
+        }, 1000)
         event.preventDefault()
     }
 
@@ -109,7 +115,7 @@ export default class ProductModal extends Component {
                                         <input type="number" className="form-control" onChange={e => this.handleFormChanges(e, 'current_inventory')} value={this.state.edit_data.current_inventory || ''} required />
                                     </div>
 
-                                    <button type="submit" className="btn btn-success"><i className="fa fa-check fa-fw"></i>Save</button>
+                                    <button type="submit" className="btn btn-success" disabled={this.state.isLoading}><i className="fa fa-check fa-fw"></i>{this.state.isLoading ? 'Saving...' : 'Save'}</button>
                                     <button type="reset" className="btn btn-danger"><i className="fa fa-times fa-fw"></i>Reset</button>
                                     <button className="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
